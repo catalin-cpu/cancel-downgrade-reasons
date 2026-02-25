@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Touch Stay - Plans & Pricing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        .sidebar-item:hover { background-color: #f1f5f9; }
+        .active-sidebar { background-color: #f1f5f9; border-right: 4px solid #14b8a6; }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .modal-content {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: none !important;
+                border-radius: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+
+    <!-- Top Navigation Bar -->
+    <nav class="h-14 bg-[#111827] flex items-center justify-between px-4 shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-[#14b8a6] rounded flex items-center justify-center">
+                <svg viewBox="0 0 24 24" class="w-5 h-5 text-white fill-current"><path d="M12 3L4 9v12h16V9l-8-6zm6 16H6v-9l6-4.5L18 10v9z"/></svg>
+            </div>
+            <button class="bg-[#14b8a6] text-xs font-bold text-white px-3 py-1.5 rounded flex items-center gap-2 uppercase tracking-wider">
+                Short Term Rental 
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="text-white text-xs font-medium cursor-pointer hover:underline">Help & Support</span>
+            <div class="w-8 h-8 bg-[#14b8a6] rounded-full flex items-center justify-center text-white font-bold text-xs cursor-pointer">JS</div>
+        </div>
+    </nav>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-56 bg-white border-r flex flex-col shrink-0 hidden md:flex">
+            <div class="p-4 flex flex-col gap-1">
+                <div class="sidebar-item p-2 rounded cursor-pointer flex items-center gap-3 text-sm text-slate-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg> Guides
+                </div>
+                <div class="sidebar-item p-2 rounded cursor-pointer flex items-center gap-3 text-sm text-slate-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg> Search
+                </div>
+                <div class="sidebar-item p-2 rounded cursor-pointer flex items-center gap-3 text-sm text-slate-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg> Content Hub
+                </div>
+                <div class="sidebar-item p-2 rounded cursor-pointer flex items-center gap-3 text-sm text-slate-600 justify-between">
+                    <div class="flex items-center gap-3"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> Contacts</div>
+                    <span class="bg-emerald-100 text-emerald-700 text-[10px] px-1 rounded font-bold">NEW</span>
+                </div>
+                <div class="sidebar-item p-2 rounded cursor-pointer flex items-center gap-3 text-sm text-slate-600 active-sidebar">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Settings
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto w-full">
+            
+            <div class="flex justify-between items-start mb-8">
+                <div>
+                    <h1 class="text-3xl font-light text-slate-800">Growth</h1>
+                    <div class="mt-4 flex flex-col gap-2">
+                         <button class="bg-[#14b8a6] text-white px-8 py-2 rounded-full font-bold shadow-sm w-fit mb-1">Subscribe now</button>
+                         
+                         <!-- Requested Button: Change number of guidebooks -->
+                         <button onclick="openModal('volume')" class="text-xs text-[#14b8a6] hover:text-teal-700 font-bold px-8 w-fit text-left flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                            Change number of guidebooks
+                         </button>
+
+                         <!-- Cancel Button -->
+                         <button onclick="openModal('cancel')" class="text-xs text-red-500 hover:text-red-600 font-medium px-8 w-fit text-left">Cancel subscription</button>
+                    </div>
+                </div>
+                
+                <!-- Usage Meters -->
+                <div class="w-96 space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span>Number of properties / guides created</span>
+                            <span>2/1</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-red-500 w-[100%]"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span>CRM contacts</span>
+                            <span>0/5000</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-[#14b8a6] w-[0%]"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span>Memo SMS</span>
+                            <span>0/200</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-[#14b8a6] w-[0%]"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span>Memo e-mails</span>
+                            <span class="text-[#14b8a6] font-bold">Unlimited</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-emerald-500 w-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">Plans & pricing</h2>
+                <div class="flex items-center gap-4 text-xs font-bold">
+                    <span class="text-slate-400">Save up to <span class="text-[#14b8a6]">30%</span> with annual payment</span>
+                    <div class="flex bg-slate-100 p-1 rounded-full items-center">
+                        <label class="flex items-center gap-1 px-3 py-1 bg-white rounded-full shadow-sm cursor-pointer">
+                            <input type="radio" name="billing" checked class="accent-[#14b8a6]"> Annual <span class="text-[#14b8a6] text-[10px] ml-1">Save up to 30%</span>
+                        </label>
+                        <label class="flex items-center gap-1 px-3 py-1 cursor-pointer">
+                            <input type="radio" name="billing" class="accent-[#14b8a6]"> Monthly
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plan Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Starter -->
+                <div class="bg-white rounded-xl border p-6 flex flex-col relative">
+                    <div class="flex justify-between mb-2">
+                        <h3 class="font-bold text-lg">Starter</h3>
+                        <div class="w-3 h-3 rounded-full bg-[#14b8a6]"></div>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-6">For individuals getting started</p>
+                    <div class="mb-6">
+                        <span class="text-slate-400 line-through text-sm">$17.50</span>
+                        <div class="flex items-baseline">
+                            <span class="text-2xl font-bold">$12</span><span class="text-xl font-bold">.50</span>
+                            <span class="text-xs text-slate-500 ml-1">/ month / guide</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400">Billed $150.00 / year</p>
+                    </div>
+                    <button onclick="openModal('tier')" class="w-full bg-[#0f172a] text-white py-2 rounded font-bold text-sm mb-6">Choose plan</button>
+                    
+                    <div class="text-[11px] space-y-4">
+                        <div class="flex items-center gap-2"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> 1 user seat included</div>
+                        <div class="space-y-2 pt-2 border-t">
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Guidebook content management</div>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Editable appearance and Custom branding</div>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Local recommendations & Interactive map</div>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Store (Upsells)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Growth (Current) -->
+                <div class="bg-slate-50 rounded-xl border-2 border-amber-200 p-6 flex flex-col relative opacity-90 shadow-sm">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-200 text-[10px] font-bold px-3 py-1 rounded-full uppercase">Best Deal</div>
+                    <div class="flex justify-between mb-2">
+                        <h3 class="font-bold text-lg">Growth</h3>
+                        <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-6">For small teams that need messaging at scale</p>
+                    <div class="mb-6">
+                        <span class="text-slate-400 line-through text-sm">$28.40</span>
+                        <div class="flex items-baseline">
+                            <span class="text-2xl font-bold">$20</span><span class="text-xl font-bold">.33</span>
+                            <span class="text-xs text-slate-500 ml-1">/ month / guide</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400">Billed $244.00 / year</p>
+                    </div>
+                    <div class="w-full text-slate-400 text-center py-2 text-sm font-medium bg-slate-100 rounded mb-6">Current plan</div>
+                    
+                    <div class="text-[11px] space-y-4">
+                        <div class="flex items-center gap-2 font-medium"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> 5 user seats</div>
+                        <div class="space-y-2 pt-2 border-t">
+                             <p class="font-bold text-slate-600 mb-1">Everything incl. in Starter +</p>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Two-way guest messaging</div>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Scheduled messages</div>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> AI chatbot for guests</div>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> AI-powered guidebook assistant</div>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Reviews and feedback collection</div>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> CRM with 5,000 contacts</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pro -->
+                <div class="bg-white rounded-xl border p-6 flex flex-col relative">
+                    <div class="flex justify-between mb-2">
+                        <h3 class="font-bold text-lg">Pro</h3>
+                        <div class="w-3 h-3 rounded-full bg-purple-600"></div>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-6">For advanced teams with high messaging volume</p>
+                    <div class="mb-6">
+                        <span class="text-slate-400 line-through text-sm">$31.60</span>
+                        <div class="flex items-baseline">
+                            <span class="text-2xl font-bold">$23</span><span class="text-xl font-bold">.25</span>
+                            <span class="text-xs text-slate-500 ml-1">/ month / guide</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400">Billed $279.00 / year</p>
+                    </div>
+                    <button class="w-full bg-[#0f172a] text-white py-2 rounded font-bold text-sm mb-6">Choose plan</button>
+                    
+                    <div class="text-[11px] space-y-4">
+                        <div class="flex items-center gap-2"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> Unlimited seats</div>
+                        <div class="space-y-2 pt-2 border-t">
+                             <p class="font-bold text-slate-600 mb-1">Everything incl. in Growth +</p>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Live priority support (&lt; 2 h)</div>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> White glove setup (11+ guides)</div>
+                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> CRM with 25,000 contacts</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <a href="#" class="text-slate-800 text-xs font-bold border-b-2 border-slate-300 pb-1">See full feature comparison</a>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer Bar -->
+    <footer class="bg-[#1e293b] text-white py-3 px-6 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2">
+            <div class="bg-teal-500 rounded-full p-1"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <span class="text-xs font-medium">Touch Stay Helper</span>
+        </div>
+        <div class="flex items-center gap-4 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+            <span>Copyright 2026 Touch Stay | All Rights Reserved</span>
+            <span class="cursor-pointer hover:underline">Terms & Conditions</span>
+        </div>
+    </footer>
+
+    <!-- Reason Modal -->
+    <div id="reasonModal" class="modal-overlay">
+        <div class="modal-content bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
+            <div class="p-8 border-b bg-slate-50">
+                <h3 id="modalTitle" class="text-2xl font-bold text-slate-900 leading-tight">Wait, before you go...</h3>
+                <p id="modalSubtitle" class="text-slate-500 mt-2">Please let us know why you're changing your subscription.</p>
+            </div>
+            
+            <form id="reasonForm" class="p-8 flex-grow flex flex-col">
+                <div id="radioContainer" class="space-y-3 mb-8">
+                    <!-- Reasons Injected Here -->
+                </div>
+
+                <div class="mt-auto">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Anything else we should know?</label>
+                    <textarea id="commentBox" rows="3" class="w-full border-2 border-slate-100 rounded-xl p-4 text-sm focus:ring-2 focus:ring-[#14b8a6] focus:border-[#14b8a6] outline-none transition-all" placeholder="We'd love your feedback..."></textarea>
+                    
+                    <button type="submit" id="submitBtn" class="w-full bg-[#0f172a] text-white font-bold py-5 rounded-xl mt-6 hover:bg-slate-800 transition-all shadow-lg active:scale-[0.98]">
+                        Confirm Changes
+                    </button>
+                    <p class="text-center text-[10px] text-slate-400 mt-6 uppercase tracking-[0.2em] font-bold">This step is mandatory</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const reasons = {
+            volume: [
+                { id: 'inventory_reduction', label: 'I have fewer properties on the market now' },
+                { id: 'low_occupancy', label: "I don't have enough guests in some properties to need this many guides" },
+                { id: 'price_sensitivity', label: "It's too expensive to use on all my properties" },
+                { id: 'consolidation', label: 'I am reusing my guides on multiple properties' },
+                { id: 'maintenance', label: 'My properties are currently off the market/under renovation' }
+            ],
+            tier: [
+                { id: 'feature_bloat', label: 'I no longer need some features' },
+                { id: 'roi_gap', label: "I'm not using the advanced tools enough to justify the cost" },
+                { id: 'cost_control', label: "I'm trying to lower my monthly cost" },
+                { id: 'seasonality', label: 'I only needed the Pro features for a specific season' }
+            ],
+            cancel: [
+                { id: 'competitor_shift', label: 'Switching to a different tool (e.g. Hostfully)' },
+                { id: 'complexity', label: "It's too hard to set up or keep updated" },
+                { id: 'guest_interest', label: "My guests aren't actually using digital guidebooks" },
+                { id: 'business_exit', label: "I'm no longer in the short-term rental business" },
+                { id: 'product_gap', label: 'Missing a feature I need (SMS, Upsells)' },
+                { id: 'quality_bugs', label: 'Technical issues or bugs made it frustrating' }
+            ]
+        };
+
+        function openModal(type) {
+            const container = document.getElementById('radioContainer');
+            const title = document.getElementById('modalTitle');
+            const subtitle = document.getElementById('modalSubtitle');
+            
+            container.innerHTML = '';
+            
+            if(type === 'cancel') {
+                title.innerText = "Cancel Subscription";
+                subtitle.innerText = "We're sorry to see you go. Why are you cancelling?";
+            } else if(type === 'volume') {
+                title.innerText = "Reduce Guidebook Count";
+                subtitle.innerText = "Help us understand why you're reducing your number of guides.";
+            } else {
+                title.innerText = "Downgrade Plan";
+                subtitle.innerText = "Help us understand why you're moving to a lower plan.";
+            }
+
+            reasons[type].forEach(reason => {
+                const div = document.createElement('label');
+                div.className = "flex items-center p-5 border-2 border-slate-100 rounded-2xl cursor-pointer hover:border-[#14b8a6] hover:bg-teal-50 transition-all group relative";
+                div.innerHTML = `
+                    <input type="radio" name="reason" value="${reason.id}" class="w-5 h-5 accent-[#14b8a6] mr-4" required>
+                    <span class="text-sm font-semibold text-slate-700 group-hover:text-teal-900">${reason.label}</span>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('reasonModal').style.display = 'flex';
+        }
+
+        document.getElementById('reasonForm').onsubmit = (e) => {
+            e.preventDefault();
+            const selected = document.querySelector('input[name="reason"]:checked').value;
+            const comment = document.getElementById('commentBox').value;
+            
+            console.log("LOGGING REASON:", { reason: selected, comment: comment, userId: 'current-user-123' });
+            
+            // Mock success
+            document.getElementById('reasonModal').innerHTML = `
+                <div class="p-12 text-center">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Request Processed</h3>
+                    <p class="text-slate-500 text-sm">Your feedback has been saved and your changes are being processed.</p>
+                    <button onclick="location.reload()" class="mt-8 text-[#14b8a6] font-bold text-sm underline">Back to Billing</button>
+                </div>
+            `;
+        };
+    </script>
+</body>
+</html>
