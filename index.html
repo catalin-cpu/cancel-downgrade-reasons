@@ -3,58 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Touch Stay - Plans & Pricing</title>
+    <meta name="robots" content="noindex">
+    <title>Touch Stay – Cancel / Downgrade Reasons</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        
+
         .sidebar-item:hover { background-color: #f1f5f9; }
         .active-sidebar { background-color: #f1f5f9; border-right: 4px solid #14b8a6; }
-        
+
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.6);
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
             backdrop-filter: blur(4px);
             z-index: 100;
             justify-content: center;
             align-items: center;
             padding: 1rem;
         }
+        .modal-overlay.open { display: flex; }
 
+        /* Full-screen on mobile (PRD requirement) */
         @media (max-width: 640px) {
             .modal-content {
                 width: 100% !important;
                 height: 100% !important;
                 max-width: none !important;
+                max-height: none !important;
                 border-radius: 0 !important;
             }
         }
+
+        /* Reason radio card selected state */
+        .reason-label:has(input:checked) {
+            border-color: #14b8a6;
+            background-color: #f0fdfa;
+        }
+
+        /* Edit plan: billing radio selected */
+        .billing-option:has(input:checked) {
+            border-color: #0f172a;
+            background: #fff;
+        }
+
+        /* Edit plan: plan picker row selected */
+        .plan-pick-row.selected {
+            border-color: #14b8a6;
+            background: #f0fdfa;
+        }
+
+        /* Guide stepper */
+        .stepper-btn {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: 1.5px solid #cbd5e1;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 18px; color: #475569;
+            background: #fff;
+            transition: border-color 0.15s, color 0.15s;
+            user-select: none;
+        }
+        .stepper-btn:hover:not(:disabled) { border-color: #14b8a6; color: #14b8a6; }
+        .stepper-btn:disabled { opacity: 0.35; cursor: default; }
     </style>
 </head>
 <body class="flex flex-col h-screen">
 
-    <!-- Top Navigation Bar -->
+    <!-- ══ TOP NAV ════════════════════════════════════ -->
     <nav class="h-14 bg-[#111827] flex items-center justify-between px-4 shrink-0">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 bg-[#14b8a6] rounded flex items-center justify-center">
                 <svg viewBox="0 0 24 24" class="w-5 h-5 text-white fill-current"><path d="M12 3L4 9v12h16V9l-8-6zm6 16H6v-9l6-4.5L18 10v9z"/></svg>
             </div>
             <button class="bg-[#14b8a6] text-xs font-bold text-white px-3 py-1.5 rounded flex items-center gap-2 uppercase tracking-wider">
-                Short Term Rental 
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
+                Short Term Rental
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
             </button>
         </div>
         <div class="flex items-center gap-4">
-            <span class="text-white text-xs font-medium cursor-pointer hover:underline">Help & Support</span>
+            <span class="text-white text-xs font-medium cursor-pointer hover:underline">Help &amp; Support</span>
             <div class="w-8 h-8 bg-[#14b8a6] rounded-full flex items-center justify-center text-white font-bold text-xs cursor-pointer">JS</div>
         </div>
     </nav>
 
     <div class="flex flex-1 overflow-hidden">
-        <!-- Sidebar -->
+
+        <!-- ══ SIDEBAR ═══════════════════════════════ -->
         <aside class="w-56 bg-white border-r flex flex-col shrink-0 hidden md:flex">
             <div class="p-4 flex flex-col gap-1">
                 <div class="sidebar-item p-2 rounded cursor-pointer flex items-center gap-3 text-sm text-slate-600">
@@ -67,7 +104,9 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg> Content Hub
                 </div>
                 <div class="sidebar-item p-2 rounded cursor-pointer flex items-center gap-3 text-sm text-slate-600 justify-between">
-                    <div class="flex items-center gap-3"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> Contacts</div>
+                    <div class="flex items-center gap-3">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> Contacts
+                    </div>
                     <span class="bg-emerald-100 text-emerald-700 text-[10px] px-1 rounded font-bold">NEW</span>
                 </div>
                 <div class="sidebar-item p-2 rounded cursor-pointer flex items-center gap-3 text-sm text-slate-600 active-sidebar">
@@ -76,53 +115,50 @@
             </div>
         </aside>
 
-        <!-- Main Content Area -->
+        <!-- ══ MAIN ═══════════════════════════════════ -->
         <main class="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto w-full">
-            
-            <div class="flex justify-between items-start mb-8">
+
+            <!-- Current plan header -->
+            <div class="flex justify-between items-start mb-8 flex-wrap gap-6">
                 <div>
                     <h1 class="text-3xl font-light text-slate-800">Growth</h1>
                     <div class="mt-4 flex flex-col gap-2">
-                         <button class="bg-[#14b8a6] text-white px-8 py-2 rounded-full font-bold shadow-sm w-fit mb-1">Subscribe now</button>
-                         
-                         <!-- Requested Button: Change number of guidebooks -->
-                         <button onclick="openModal('volume')" class="text-xs text-[#14b8a6] hover:text-teal-700 font-bold px-8 w-fit text-left flex items-center gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                            Change number of guidebooks
-                         </button>
-
-                         <!-- Cancel Button -->
-                         <button onclick="openModal('cancel')" class="text-xs text-red-500 hover:text-red-600 font-medium px-8 w-fit text-left">Cancel subscription</button>
+                        <button class="bg-[#14b8a6] text-white px-8 py-2 rounded-full font-bold shadow-sm w-fit">Subscribe now</button>
+                        <!-- TRIGGER: Edit plan flow (covers volume + tier downgrade) -->
+                        <button onclick="openEditPlanModal()" class="text-xs text-[#14b8a6] hover:text-teal-700 font-bold px-8 w-fit text-left flex items-center gap-1 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                            Manage your subscription
+                        </button>
+                        <!-- TRIGGER: Cancellation -->
+                        <button onclick="openReasonModal('cancel')" class="text-xs text-red-500 hover:text-red-600 font-medium px-8 w-fit text-left">Cancel subscription</button>
                     </div>
                 </div>
-                
-                <!-- Usage Meters -->
+
+                <!-- Usage meters -->
                 <div class="w-96 space-y-4">
                     <div>
                         <div class="flex justify-between text-xs font-medium mb-1">
                             <span>Number of properties / guides created</span>
-                            <span>2/1</span>
+                            <span class="text-red-500 font-bold">2/2</span>
                         </div>
                         <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-red-500 w-[100%]"></div>
+                            <div class="h-full bg-red-500 w-full"></div>
                         </div>
                     </div>
                     <div>
                         <div class="flex justify-between text-xs font-medium mb-1">
-                            <span>CRM contacts</span>
-                            <span>0/5000</span>
+                            <span>CRM contacts</span><span>0/5000</span>
                         </div>
                         <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-[#14b8a6] w-[0%]"></div>
+                            <div class="h-full bg-[#14b8a6] w-0"></div>
                         </div>
                     </div>
                     <div>
                         <div class="flex justify-between text-xs font-medium mb-1">
-                            <span>Memo SMS</span>
-                            <span>0/200</span>
+                            <span>Memo SMS</span><span>0/200</span>
                         </div>
                         <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-[#14b8a6] w-[0%]"></div>
+                            <div class="h-full bg-[#14b8a6] w-0"></div>
                         </div>
                     </div>
                     <div>
@@ -137,13 +173,14 @@
                 </div>
             </div>
 
+            <!-- Billing toggle -->
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-slate-800">Plans & pricing</h2>
+                <h2 class="text-2xl font-bold text-slate-800">Plans &amp; pricing</h2>
                 <div class="flex items-center gap-4 text-xs font-bold">
                     <span class="text-slate-400">Save up to <span class="text-[#14b8a6]">30%</span> with annual payment</span>
                     <div class="flex bg-slate-100 p-1 rounded-full items-center">
                         <label class="flex items-center gap-1 px-3 py-1 bg-white rounded-full shadow-sm cursor-pointer">
-                            <input type="radio" name="billing" checked class="accent-[#14b8a6]"> Annual <span class="text-[#14b8a6] text-[10px] ml-1">Save up to 30%</span>
+                            <input type="radio" name="billing" checked class="accent-[#14b8a6]"> Annual <span class="text-[#14b8a6] text-[10px] ml-1">Save 30%</span>
                         </label>
                         <label class="flex items-center gap-1 px-3 py-1 cursor-pointer">
                             <input type="radio" name="billing" class="accent-[#14b8a6]"> Monthly
@@ -152,39 +189,41 @@
                 </div>
             </div>
 
-            <!-- Plan Cards Grid -->
+            <!-- Plan cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
                 <!-- Starter -->
-                <div class="bg-white rounded-xl border p-6 flex flex-col relative">
+                <div class="bg-white rounded-xl border p-6 flex flex-col">
                     <div class="flex justify-between mb-2">
                         <h3 class="font-bold text-lg">Starter</h3>
                         <div class="w-3 h-3 rounded-full bg-[#14b8a6]"></div>
                     </div>
                     <p class="text-xs text-slate-500 mb-6">For individuals getting started</p>
                     <div class="mb-6">
-                        <span class="text-slate-400 line-through text-sm">$17.50</span>
+                        <span class="text-slate-400 line-through text-sm">$12.50</span>
                         <div class="flex items-baseline">
-                            <span class="text-2xl font-bold">$12</span><span class="text-xl font-bold">.50</span>
+                            <span class="text-2xl font-bold">$8</span><span class="text-xl font-bold">.25</span>
                             <span class="text-xs text-slate-500 ml-1">/ month / guide</span>
                         </div>
-                        <p class="text-[10px] text-slate-400">Billed $150.00 / year</p>
+                        <p class="text-[10px] text-slate-400">Billed $99.00 / year</p>
                     </div>
-                    <button onclick="openModal('tier')" class="w-full bg-[#0f172a] text-white py-2 rounded font-bold text-sm mb-6">Choose plan</button>
-                    
+                    <button onclick="openEditPlanModal('starter')" class="w-full bg-[#0f172a] text-white py-2 rounded font-bold text-sm mb-6">Choose plan</button>
                     <div class="text-[11px] space-y-4">
-                        <div class="flex items-center gap-2"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> 1 user seat included</div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> 1 user seat included
+                        </div>
                         <div class="space-y-2 pt-2 border-t">
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Guidebook content management</div>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Editable appearance and Custom branding</div>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Local recommendations & Interactive map</div>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Store (Upsells)</div>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Guidebook content management</div>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Editable appearance &amp; Custom branding</div>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Local recommendations &amp; Interactive map</div>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Store (Upsells)</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Growth (Current) -->
-                <div class="bg-slate-50 rounded-xl border-2 border-amber-200 p-6 flex flex-col relative opacity-90 shadow-sm">
-                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-200 text-[10px] font-bold px-3 py-1 rounded-full uppercase">Best Deal</div>
+                <!-- Growth — Current -->
+                <div class="bg-slate-50 rounded-xl border-2 border-amber-200 p-6 flex flex-col relative">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-200 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">Best Deal</div>
                     <div class="flex justify-between mb-2">
                         <h3 class="font-bold text-lg">Growth</h3>
                         <div class="w-3 h-3 rounded-full bg-amber-400"></div>
@@ -199,23 +238,24 @@
                         <p class="text-[10px] text-slate-400">Billed $244.00 / year</p>
                     </div>
                     <div class="w-full text-slate-400 text-center py-2 text-sm font-medium bg-slate-100 rounded mb-6">Current plan</div>
-                    
                     <div class="text-[11px] space-y-4">
-                        <div class="flex items-center gap-2 font-medium"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> 5 user seats</div>
+                        <div class="flex items-center gap-2 font-medium">
+                            <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> 5 user seats
+                        </div>
                         <div class="space-y-2 pt-2 border-t">
-                             <p class="font-bold text-slate-600 mb-1">Everything incl. in Starter +</p>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Two-way guest messaging</div>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Scheduled messages</div>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> AI chatbot for guests</div>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> AI-powered guidebook assistant</div>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Reviews and feedback collection</div>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> CRM with 5,000 contacts</div>
+                            <p class="font-bold text-slate-600 mb-1">Everything in Starter +</p>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Two-way guest messaging</div>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Scheduled messages</div>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> AI chatbot for guests</div>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> AI-powered guidebook assistant</div>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Reviews and feedback collection</div>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> CRM with 5,000 contacts</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Pro -->
-                <div class="bg-white rounded-xl border p-6 flex flex-col relative">
+                <div class="bg-white rounded-xl border p-6 flex flex-col">
                     <div class="flex justify-between mb-2">
                         <h3 class="font-bold text-lg">Pro</h3>
                         <div class="w-3 h-3 rounded-full bg-purple-600"></div>
@@ -229,18 +269,20 @@
                         </div>
                         <p class="text-[10px] text-slate-400">Billed $279.00 / year</p>
                     </div>
-                    <button class="w-full bg-[#0f172a] text-white py-2 rounded font-bold text-sm mb-6">Choose plan</button>
-                    
+                    <button onclick="openEditPlanModal('pro')" class="w-full bg-[#14b8a6] text-white py-2 rounded font-bold text-sm mb-6">Upgrade to Pro</button>
                     <div class="text-[11px] space-y-4">
-                        <div class="flex items-center gap-2"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> Unlimited seats</div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> Unlimited seats
+                        </div>
                         <div class="space-y-2 pt-2 border-t">
-                             <p class="font-bold text-slate-600 mb-1">Everything incl. in Growth +</p>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Live priority support (&lt; 2 h)</div>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> White glove setup (11+ guides)</div>
-                             <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> CRM with 25,000 contacts</div>
+                            <p class="font-bold text-slate-600 mb-1">Everything in Growth +</p>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> Live priority support (&lt; 2 h)</div>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> White glove setup (11+ guides)</div>
+                            <div class="flex gap-2"><svg class="w-3 h-3 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M5 13l4 4L19 7"/></svg> CRM with 25,000 contacts</div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="mt-8 text-center">
@@ -249,119 +291,412 @@
         </main>
     </div>
 
-    <!-- Footer Bar -->
+    <!-- ══ FOOTER ══════════════════════════════════════ -->
     <footer class="bg-[#1e293b] text-white py-3 px-6 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-2">
-            <div class="bg-teal-500 rounded-full p-1"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <div class="bg-teal-500 rounded-full p-1">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
             <span class="text-xs font-medium">Touch Stay Helper</span>
         </div>
         <div class="flex items-center gap-4 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
             <span>Copyright 2026 Touch Stay | All Rights Reserved</span>
-            <span class="cursor-pointer hover:underline">Terms & Conditions</span>
+            <span class="cursor-pointer hover:underline">Terms &amp; Conditions</span>
         </div>
     </footer>
 
-    <!-- Reason Modal -->
-    <div id="reasonModal" class="modal-overlay">
-        <div class="modal-content bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
-            <div class="p-8 border-b bg-slate-50">
-                <h3 id="modalTitle" class="text-2xl font-bold text-slate-900 leading-tight">Wait, before you go...</h3>
-                <p id="modalSubtitle" class="text-slate-500 mt-2">Please let us know why you're changing your subscription.</p>
-            </div>
-            
-            <form id="reasonForm" class="p-8 flex-grow flex flex-col">
-                <div id="radioContainer" class="space-y-3 mb-8">
-                    <!-- Reasons Injected Here -->
+    <!-- ══════════════════════════════════════════════════
+         EDIT YOUR PLAN MODAL
+         Opens from "Manage your subscription" + plan card buttons.
+         Detects downgrade on "Next" → routes to reason modal.
+    ═══════════════════════════════════════════════════ -->
+    <div id="editPlanModal" class="modal-overlay">
+        <div class="modal-content bg-[#f5f5f5] w-full max-w-md rounded-2xl shadow-2xl flex flex-col overflow-hidden" style="max-height:92vh;">
+
+            <!-- Scrollable body -->
+            <div class="overflow-y-auto flex-1 p-6 flex flex-col gap-5">
+
+                <h2 class="text-xl font-bold text-slate-900">Edit your plan</h2>
+
+                <!-- ── Your plan ── -->
+                <div>
+                    <p class="text-sm font-semibold text-slate-700 mb-2">Your plan</p>
+                    <div id="planDisplay" class="bg-white rounded-xl border border-slate-200 p-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div id="planDot" class="w-3 h-3 rounded-full bg-amber-400"></div>
+                            <div>
+                                <p id="planName" class="font-semibold text-slate-900 text-sm">Growth</p>
+                                <p class="text-xs text-slate-400">Selected plan</p>
+                            </div>
+                        </div>
+                        <button onclick="togglePlanPicker()" id="changePlanBtn" class="text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 px-4 py-1.5 rounded-lg transition-colors">Change</button>
+                    </div>
+
+                    <!-- Inline plan picker (hidden by default) -->
+                    <div id="planPicker" class="hidden mt-2 flex flex-col gap-2">
+                        <div class="plan-pick-row bg-white rounded-xl border-2 border-slate-200 p-4 flex items-center gap-3 cursor-pointer transition-all" data-plan="starter" onclick="selectPlan('starter')">
+                            <div class="w-3 h-3 rounded-full bg-[#14b8a6] shrink-0"></div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-sm text-slate-900">Starter</p>
+                                <p class="text-xs text-slate-400">$8.25 / month / guide (annual)</p>
+                            </div>
+                        </div>
+                        <div class="plan-pick-row bg-white rounded-xl border-2 border-slate-200 p-4 flex items-center gap-3 cursor-pointer transition-all selected" data-plan="growth" onclick="selectPlan('growth')">
+                            <div class="w-3 h-3 rounded-full bg-amber-400 shrink-0"></div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-sm text-slate-900">Growth</p>
+                                <p class="text-xs text-slate-400">$20.33 / month / guide (annual)</p>
+                            </div>
+                            <span class="text-[10px] font-bold text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full">Current</span>
+                        </div>
+                        <div class="plan-pick-row bg-white rounded-xl border-2 border-slate-200 p-4 flex items-center gap-3 cursor-pointer transition-all" data-plan="pro" onclick="selectPlan('pro')">
+                            <div class="w-3 h-3 rounded-full bg-purple-600 shrink-0"></div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-sm text-slate-900">Pro</p>
+                                <p class="text-xs text-slate-400">$23.25 / month / guide (annual)</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mt-auto">
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Anything else we should know?</label>
-                    <textarea id="commentBox" rows="3" class="w-full border-2 border-slate-100 rounded-xl p-4 text-sm focus:ring-2 focus:ring-[#14b8a6] focus:border-[#14b8a6] outline-none transition-all" placeholder="We'd love your feedback..."></textarea>
-                    
-                    <button type="submit" id="submitBtn" class="w-full bg-[#0f172a] text-white font-bold py-5 rounded-xl mt-6 hover:bg-slate-800 transition-all shadow-lg active:scale-[0.98]">
-                        Confirm Changes
-                    </button>
-                    <p class="text-center text-[10px] text-slate-400 mt-6 uppercase tracking-[0.2em] font-bold">This step is mandatory</p>
+                <!-- ── Billing period ── -->
+                <div>
+                    <p class="text-sm font-semibold text-slate-700 mb-2">Billing period</p>
+                    <div class="flex flex-col gap-2">
+                        <label class="billing-option bg-slate-100 border-2 border-transparent rounded-xl p-4 flex items-center justify-between cursor-pointer transition-all">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="editBilling" value="annual" checked class="accent-[#0f172a] w-4 h-4" onchange="updateEditTotal()">
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-900">Annual billing</p>
+                                    <p id="annualPrice" class="text-sm text-slate-500">$8.25 / month / guide</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold text-amber-800 bg-amber-300 px-2.5 py-1 rounded-md">Save up to 30%</span>
+                        </label>
+                        <label class="billing-option bg-slate-100 border-2 border-transparent rounded-xl p-4 flex items-center gap-3 cursor-pointer transition-all">
+                            <input type="radio" name="editBilling" value="monthly" class="accent-[#0f172a] w-4 h-4" onchange="updateEditTotal()">
+                            <div>
+                                <p class="text-sm font-semibold text-slate-900">Monthly billing</p>
+                                <p id="monthlyPrice" class="text-sm text-slate-500">$12.50 / month / guide</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ── Number of guides ── -->
+                <div>
+                    <p class="text-sm font-semibold text-slate-700 mb-1">Number of guides</p>
+                    <p class="text-xs text-slate-400 mb-3">E.g. 2 apartments in a building is 2 guides, 10 cottages on a single site is 10 guides.</p>
+                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center justify-between">
+                        <button class="stepper-btn" id="guideMinus" onclick="changeGuides(-1)" type="button">−</button>
+                        <span id="guideCount" class="text-base font-semibold text-slate-800 w-12 text-center">2</span>
+                        <button class="stepper-btn" id="guidePlus" onclick="changeGuides(1)" type="button">+</button>
+                    </div>
+                </div>
+
+                <!-- ── Currency ── -->
+                <div class="flex items-center justify-between">
+                    <p class="text-sm font-semibold text-slate-700">Currency</p>
+                    <select class="border border-slate-200 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 bg-white cursor-pointer">
+                        <option>USD</option>
+                        <option>GBP</option>
+                        <option>EUR</option>
+                    </select>
+                </div>
+
+                <!-- ── Total ── -->
+                <div class="pt-1">
+                    <p id="editTotal" class="text-2xl font-bold text-slate-900">Total: $488.00 per year</p>
+                </div>
+
+            </div>
+
+            <!-- Sticky CTA -->
+            <div class="p-5 bg-[#f5f5f5] border-t border-slate-200 flex flex-col gap-3 shrink-0">
+                <button onclick="handleEditPlanNext()" class="w-full bg-[#14b8a6] hover:bg-teal-600 text-white font-bold py-4 rounded-xl transition-colors shadow-sm active:scale-[0.98]">
+                    Next: Billing details
+                </button>
+                <button onclick="closeEditPlanModal()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-3 rounded-xl transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         REASON MODAL
+         Mandatory — no X button.
+         Triggered by downgrade detection in Edit Plan flow,
+         or directly by "Cancel subscription".
+         PRD NOTE: change is only processed after this survey is submitted.
+    ═══════════════════════════════════════════════════ -->
+    <div id="reasonModal" class="modal-overlay">
+        <div class="modal-content bg-white w-full max-w-lg rounded-2xl shadow-2xl flex flex-col" style="max-height:90vh;">
+
+            <div class="p-6 border-b bg-slate-50 shrink-0">
+                <div id="modalBadge" class="inline-flex items-center text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full mb-3"></div>
+                <h3 id="modalTitle" class="text-xl font-bold text-slate-900 leading-tight"></h3>
+                <p id="modalSubtitle" class="text-slate-500 text-sm mt-1"></p>
+            </div>
+
+            <form id="reasonForm" class="flex flex-col overflow-y-auto flex-1 p-6 gap-5">
+
+                <div id="radioContainer" class="space-y-2.5"></div>
+
+                <div class="shrink-0">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Anything else we should know?</label>
+                    <textarea id="commentBox" rows="3" class="w-full border-2 border-slate-100 rounded-xl p-4 text-sm focus:ring-2 focus:ring-[#14b8a6] focus:border-[#14b8a6] outline-none transition-all resize-none" placeholder="Optional — share any additional feedback…"></textarea>
+                </div>
+
+                <div class="shrink-0 pb-2">
+                    <button type="submit" id="submitBtn" class="w-full bg-[#0f172a] text-white font-bold py-4 rounded-xl hover:bg-slate-700 transition-all shadow active:scale-[0.98]">Confirm</button>
+                    <p id="validationMsg" class="text-center text-[11px] text-red-400 mt-2 h-4"></p>
+                    <p class="text-center text-[10px] text-slate-400 mt-3 uppercase tracking-[0.18em] font-bold">This step is mandatory — you cannot skip it</p>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- ══ SUCCESS OVERLAY ════════════════════════════ -->
+    <div id="successOverlay" class="modal-overlay">
+        <div class="bg-white rounded-2xl shadow-2xl p-12 text-center max-w-sm w-full mx-4">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Feedback saved</h3>
+            <p class="text-slate-500 text-sm">Your reason has been logged and your changes are being processed.</p>
+            <button onclick="closeSuccess()" class="mt-8 text-[#14b8a6] font-bold text-sm underline">Back to Billing</button>
+        </div>
+    </div>
+
     <script>
-        const reasons = {
-            volume: [
-                { id: 'inventory_reduction', label: 'I have fewer properties on the market now' },
-                { id: 'low_occupancy', label: "I don't have enough guests in some properties to need this many guides" },
-                { id: 'price_sensitivity', label: "It's too expensive to use on all my properties" },
-                { id: 'consolidation', label: 'I am reusing my guides on multiple properties' },
-                { id: 'maintenance', label: 'My properties are currently off the market/under renovation' }
-            ],
-            tier: [
-                { id: 'feature_bloat', label: 'I no longer need some features' },
-                { id: 'roi_gap', label: "I'm not using the advanced tools enough to justify the cost" },
-                { id: 'cost_control', label: "I'm trying to lower my monthly cost" },
-                { id: 'seasonality', label: 'I only needed the Pro features for a specific season' }
-            ],
-            cancel: [
-                { id: 'competitor_shift', label: 'Switching to a different tool (e.g. Hostfully)' },
-                { id: 'complexity', label: "It's too hard to set up or keep updated" },
-                { id: 'guest_interest', label: "My guests aren't actually using digital guidebooks" },
-                { id: 'business_exit', label: "I'm no longer in the short-term rental business" },
-                { id: 'product_gap', label: 'Missing a feature I need (SMS, Upsells)' },
-                { id: 'quality_bugs', label: 'Technical issues or bugs made it frustrating' }
-            ]
+    /* ════════════════════════════════════════════════════
+       SUBSCRIPTION STATE
+    ════════════════════════════════════════════════════ */
+    const CURRENT = { plan: 'growth', guides: 2, billing: 'annual' };
+
+    const PLANS = {
+        starter: { rank: 0, name: 'Starter', dotColor: '#14b8a6', annual: 8.25,  monthly: 12.50 },
+        growth:  { rank: 1, name: 'Growth',  dotColor: '#f59e0b', annual: 20.33, monthly: 28.40 },
+        pro:     { rank: 2, name: 'Pro',     dotColor: '#9333ea', annual: 23.25, monthly: 31.60 },
+    };
+
+    /* ════════════════════════════════════════════════════
+       EDIT PLAN MODAL
+    ════════════════════════════════════════════════════ */
+    let editState = {};
+
+    function openEditPlanModal(preselect) {
+        editState = {
+            plan:    preselect || CURRENT.plan,
+            guides:  CURRENT.guides,
+            billing: CURRENT.billing,
         };
+        renderEditModal();
+        document.getElementById('editPlanModal').classList.add('open');
+    }
 
-        function openModal(type) {
-            const container = document.getElementById('radioContainer');
-            const title = document.getElementById('modalTitle');
-            const subtitle = document.getElementById('modalSubtitle');
-            
-            container.innerHTML = '';
-            
-            if(type === 'cancel') {
-                title.innerText = "Cancel Subscription";
-                subtitle.innerText = "We're sorry to see you go. Why are you cancelling?";
-            } else if(type === 'volume') {
-                title.innerText = "Reduce Guidebook Count";
-                subtitle.innerText = "Help us understand why you're reducing your number of guides.";
-            } else {
-                title.innerText = "Downgrade Plan";
-                subtitle.innerText = "Help us understand why you're moving to a lower plan.";
-            }
+    function renderEditModal() {
+        const plan = PLANS[editState.plan];
 
-            reasons[type].forEach(reason => {
-                const div = document.createElement('label');
-                div.className = "flex items-center p-5 border-2 border-slate-100 rounded-2xl cursor-pointer hover:border-[#14b8a6] hover:bg-teal-50 transition-all group relative";
-                div.innerHTML = `
-                    <input type="radio" name="reason" value="${reason.id}" class="w-5 h-5 accent-[#14b8a6] mr-4" required>
-                    <span class="text-sm font-semibold text-slate-700 group-hover:text-teal-900">${reason.label}</span>
-                `;
-                container.appendChild(div);
-            });
+        // Plan display row
+        document.getElementById('planName').textContent = plan.name;
+        document.getElementById('planDot').style.background = plan.dotColor;
 
-            document.getElementById('reasonModal').style.display = 'flex';
+        // Billing prices
+        document.getElementById('annualPrice').textContent  = `$${plan.annual.toFixed(2)} / month / guide`;
+        document.getElementById('monthlyPrice').textContent = `$${plan.monthly.toFixed(2)} / month / guide`;
+
+        // Billing radio
+        document.querySelectorAll('input[name="editBilling"]').forEach(r => {
+            r.checked = r.value === editState.billing;
+        });
+
+        // Plan picker highlight
+        document.querySelectorAll('.plan-pick-row').forEach(row => {
+            row.classList.toggle('selected', row.dataset.plan === editState.plan);
+        });
+
+        // Guide stepper
+        document.getElementById('guideCount').textContent = editState.guides;
+        document.getElementById('guideMinus').disabled = editState.guides <= 1;
+
+        updateEditTotal();
+
+        // Hide picker if open
+        document.getElementById('planPicker').classList.add('hidden');
+        document.getElementById('changePlanBtn').textContent = 'Change';
+    }
+
+    function closeEditPlanModal() {
+        document.getElementById('editPlanModal').classList.remove('open');
+    }
+
+    function togglePlanPicker() {
+        const picker = document.getElementById('planPicker');
+        const btn    = document.getElementById('changePlanBtn');
+        const hidden = picker.classList.toggle('hidden');
+        btn.textContent = hidden ? 'Change' : 'Done';
+    }
+
+    function selectPlan(planKey) {
+        editState.plan = planKey;
+        const plan = PLANS[planKey];
+        document.getElementById('planName').textContent = plan.name;
+        document.getElementById('planDot').style.background = plan.dotColor;
+        document.getElementById('annualPrice').textContent  = `$${plan.annual.toFixed(2)} / month / guide`;
+        document.getElementById('monthlyPrice').textContent = `$${plan.monthly.toFixed(2)} / month / guide`;
+        document.querySelectorAll('.plan-pick-row').forEach(row => {
+            row.classList.toggle('selected', row.dataset.plan === planKey);
+        });
+        updateEditTotal();
+        // Collapse picker
+        document.getElementById('planPicker').classList.add('hidden');
+        document.getElementById('changePlanBtn').textContent = 'Change';
+    }
+
+    function changeGuides(delta) {
+        editState.guides = Math.max(1, editState.guides + delta);
+        document.getElementById('guideCount').textContent = editState.guides;
+        document.getElementById('guideMinus').disabled = editState.guides <= 1;
+        updateEditTotal();
+    }
+
+    function updateEditTotal() {
+        const billingVal = document.querySelector('input[name="editBilling"]:checked')?.value || editState.billing;
+        editState.billing = billingVal;
+        const plan   = PLANS[editState.plan];
+        const rate   = billingVal === 'annual' ? plan.annual : plan.monthly;
+        const period = billingVal === 'annual' ? 'year' : 'month';
+        const multiplier = billingVal === 'annual' ? 12 : 1;
+        const total  = (rate * multiplier * editState.guides).toFixed(2);
+        document.getElementById('editTotal').textContent = `Total: $${total} per ${period}`;
+    }
+
+    function handleEditPlanNext() {
+        const newPlan    = PLANS[editState.plan];
+        const currentPlan = PLANS[CURRENT.plan];
+
+        const tierDowngrade   = newPlan.rank < currentPlan.rank;
+        const volumeDowngrade = editState.guides < CURRENT.guides;
+
+        if (tierDowngrade && volumeDowngrade) {
+            // Both — prioritise tier downgrade reason
+            closeEditPlanModal();
+            openReasonModal('tier');
+        } else if (tierDowngrade) {
+            closeEditPlanModal();
+            openReasonModal('tier');
+        } else if (volumeDowngrade) {
+            closeEditPlanModal();
+            openReasonModal('volume');
+        } else {
+            // Upgrade or neutral change — proceed directly
+            closeEditPlanModal();
+            document.getElementById('successOverlay').classList.add('open');
         }
+    }
 
-        document.getElementById('reasonForm').onsubmit = (e) => {
-            e.preventDefault();
-            const selected = document.querySelector('input[name="reason"]:checked').value;
-            const comment = document.getElementById('commentBox').value;
-            
-            console.log("LOGGING REASON:", { reason: selected, comment: comment, userId: 'current-user-123' });
-            
-            // Mock success
-            document.getElementById('reasonModal').innerHTML = `
-                <div class="p-12 text-center">
-                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Request Processed</h3>
-                    <p class="text-slate-500 text-sm">Your feedback has been saved and your changes are being processed.</p>
-                    <button onclick="location.reload()" class="mt-8 text-[#14b8a6] font-bold text-sm underline">Back to Billing</button>
-                </div>
+    /* ════════════════════════════════════════════════════
+       REASON MODAL
+    ════════════════════════════════════════════════════ */
+    const reasons = {
+        volume: [
+            { id: 'inventory_reduction', label: 'I have fewer properties on the market now' },
+            { id: 'partial_adoption',    label: 'I will not use guidebooks for all my properties' },
+            { id: 'price_sensitivity',   label: "It's too expensive to use on all my properties" },
+            { id: 'low_occupancy',       label: "I don't have enough guests in some properties to need this many guides" },
+            { id: 'consolidation',       label: 'I am reusing my guides on multiple properties' },
+            { id: 'maintenance',         label: 'My properties are currently off the market / under renovation' },
+        ],
+        tier: [
+            { id: 'feature_bloat', label: 'I no longer need some features' },
+            { id: 'roi_gap',       label: "I'm not using the advanced tools enough to justify the cost" },
+            { id: 'cost_control',  label: "I'm trying to lower my monthly cost" },
+            { id: 'seasonality',   label: "I only needed the Pro features for a one-time event / busy season" },
+        ],
+        cancel: [
+            { id: 'competitor_shift', label: "I'm switching to a different guidebook tool (e.g., Hostfully, Guesty)" },
+            { id: 'complexity',       label: "It's too hard to set up or keep updated" },
+            { id: 'guest_interest',   label: "My guests aren't actually using the digital guidebooks" },
+            { id: 'business_exit',    label: "I'm no longer in the short-term rental business" },
+            { id: 'product_gap',      label: "It's missing a feature I need (e.g., SMS integration, upsells)" },
+            { id: 'quality_bugs',     label: 'Technical issues or bugs made it frustrating to use' },
+        ],
+    };
+
+    const reasonConfig = {
+        cancel: {
+            badge:    { text: 'Cancellation', cls: 'bg-red-100 text-red-700' },
+            title:    'Before you cancel…',
+            subtitle: "We're sorry to see you go. Please let us know why.",
+            cta:      'Confirm cancellation',
+        },
+        volume: {
+            badge:    { text: 'Volume change', cls: 'bg-amber-100 text-amber-700' },
+            title:    'Why are you reducing guidebooks?',
+            subtitle: 'Help us understand what\'s driving this change.',
+            cta:      'Confirm reduction',
+        },
+        tier: {
+            badge:    { text: 'Plan downgrade', cls: 'bg-slate-100 text-slate-600' },
+            title:    'Why are you downgrading?',
+            subtitle: "Let us know what's not working on Growth.",
+            cta:      'Confirm downgrade',
+        },
+    };
+
+    let activeReasonType = null;
+
+    function openReasonModal(type) {
+        activeReasonType = type;
+        const cfg = reasonConfig[type];
+
+        const badge = document.getElementById('modalBadge');
+        badge.className = `inline-flex items-center text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full mb-3 ${cfg.badge.cls}`;
+        badge.textContent = cfg.badge.text;
+
+        document.getElementById('modalTitle').textContent    = cfg.title;
+        document.getElementById('modalSubtitle').textContent = cfg.subtitle;
+        document.getElementById('submitBtn').textContent     = cfg.cta;
+        document.getElementById('commentBox').value          = '';
+        document.getElementById('validationMsg').textContent = '';
+
+        const container = document.getElementById('radioContainer');
+        container.innerHTML = '';
+        reasons[type].forEach(r => {
+            const lbl = document.createElement('label');
+            lbl.className = 'reason-label flex items-start p-4 border-2 border-slate-100 rounded-2xl cursor-pointer hover:border-[#14b8a6] hover:bg-teal-50 transition-all gap-3';
+            lbl.innerHTML = `
+                <input type="radio" name="reason" value="${r.id}" class="mt-0.5 w-4 h-4 accent-[#14b8a6] shrink-0">
+                <span class="text-sm font-medium text-slate-700">${r.label}</span>
             `;
-        };
+            container.appendChild(lbl);
+        });
+
+        document.getElementById('reasonModal').classList.add('open');
+    }
+
+    document.getElementById('reasonForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const selected = document.querySelector('input[name="reason"]:checked');
+        if (!selected) {
+            document.getElementById('validationMsg').textContent = 'Please select a reason to continue.';
+            return;
+        }
+        console.log('[Cancel/Downgrade Logged]', {
+            type:      activeReasonType,
+            reason:    selected.value,
+            comment:   document.getElementById('commentBox').value.trim(),
+            timestamp: new Date().toISOString(),
+        });
+        document.getElementById('reasonModal').classList.remove('open');
+        document.getElementById('successOverlay').classList.add('open');
+    });
+
+    function closeSuccess() {
+        document.getElementById('successOverlay').classList.remove('open');
+    }
     </script>
 </body>
 </html>
